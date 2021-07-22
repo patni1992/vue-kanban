@@ -1,59 +1,81 @@
 <template>
-  <div class="form-container">
+  <form-card title="Login">
     <div class="form-header">
-      <h2 class="form-title">Login</h2>
       <p class="form-text">
-        Not a member? <router-link to="home">Signup now</router-link>
+        Not a member?
+        <router-link to="Register">Signup now</router-link>
       </p>
     </div>
-    <app-input label="Email" />
-    <app-input type="password" label="Password" />
-    <router-link to="home">Forgot your password?</router-link>
-    <app-button @click="submit" :loading="isLoading" class="submit-button">
-      Submit
-    </app-button>
-  </div>
+    <form @submit.prevent="submit">
+      <app-input
+        :error="v$.email.$errors[0]?.$message"
+        @blur="v$.email.$touch"
+        v-model="form.email"
+        label="Email"
+      />
+      <app-input
+        :error="v$.password.$errors[0]?.$message"
+        @blur="v$.password.$touch"
+        v-model="form.password"
+        type="password"
+        label="Password"
+      />
+      <router-link class="forgot-password" to="home">
+        Forgot your password?
+      </router-link>
+      <app-button type="submit" :loading="isLoading" class="submit-button">
+        Submit
+      </app-button>
+    </form>
+  </form-card>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { email, required } from '@vuelidate/validators'
 import AppInput from '@/components/AppInput.vue'
 import AppButton from '@/components/AppButton.vue'
+import FormCard from '@/views/auth/FormCard.vue'
+import useAuth from '@/store/useAuth'
 
 export default defineComponent({
   components: {
     AppButton,
     AppInput,
+    FormCard,
   },
   setup() {
-    const isLoading = ref(false)
+    const { login, isLoading } = useAuth()
+    const form = reactive({
+      password: '',
+      email: '',
+    })
 
-    const submit = () => {
-      isLoading.value = true
+    const rules = {
+      password: { required },
+      email: { required, email },
+    }
 
-      setTimeout(() => {
-        isLoading.value = false
-      }, 2000)
+    const v$ = useVuelidate(rules, form, { $lazy: true })
+
+    const submit = async () => {
+      v$.value.$touch()
+      if (v$.value.$error) return
+      await login(form)
     }
 
     return {
+      v$,
       isLoading,
       submit,
+      form,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.form-container {
-  box-shadow: 0 5px 20px 0 rgb(21 27 38 / 8%);
-  width: 100%;
-  max-width: 32rem;
-  margin: 5rem auto 0 auto;
-  padding: 2rem;
-  text-align: left;
-}
-
 .form-header {
   text-align: center;
 }
@@ -61,12 +83,9 @@ export default defineComponent({
 .form-text {
   margin-top: 0;
 }
-.form-title {
-  margin-bottom: 0.5rem;
-  margin-top: 0;
-}
 
-.submit-button {
-  margin-top: 2rem;
+.forgot-password {
+  display: inline-block;
+  margin-bottom: 1rem;
 }
 </style>

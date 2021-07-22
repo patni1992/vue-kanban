@@ -1,5 +1,6 @@
 <template>
   <button
+    :type="type"
     :disabled="loading"
     class="button"
     :class="{ 'button--loading': loading }"
@@ -20,6 +21,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      default: 'button',
+    },
   },
 })
 </script>
@@ -35,7 +40,7 @@ export default defineComponent({
   border-radius: 0.4rem;
   width: 100%;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
 
   &:disabled {
     border-color: #dbdbdb;
