@@ -25,11 +25,11 @@ export default {
   height: 100%;
   // background: rgba(64, 140, 254, 0.8);
   // background: linear-gradient(to right, #56ccf2, #2f80ed);
-  background-color: #f9f9fb;
   padding-top: 6rem;
 }
 .form {
-  background-color: white;
+  background: #303132;
+  color: white;
   box-shadow: 0 5px 20px 0 rgb(21 27 38 / 8%);
   width: 100%;
   max-width: 32rem;

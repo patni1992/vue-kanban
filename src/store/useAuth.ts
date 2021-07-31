@@ -9,6 +9,7 @@ const defaultState = {
   token: localStorage.getItem('token') || '',
   loading: false,
   error: '',
+  user: null,
 }
 
 const state = reactive(defaultState)
@@ -27,6 +28,7 @@ const extractErrorMessage = (error: any) => {
 const getters = {
   isLoading: computed(() => state.loading),
   isAuthenticated: computed(() => !!state.token),
+  user: computed(() => state.user),
 }
 
 const actions = {
@@ -52,11 +54,28 @@ const actions = {
     try {
       state.loading = true
       await api.register(payload)
-      router.push({ name: 'VerifyEmail' })
+      router.push({ name: 'VerifyEmail', params: { email: payload.email } })
     } catch (e) {
       toast.error(extractErrorMessage(e))
     }
     state.loading = false
+  },
+  async me() {
+    try {
+      const response = await api.me()
+      state.user = response.data
+    } catch (e) {
+      toast.error(e.message)
+    }
+  },
+  async verifyEmail(path: string) {
+    try {
+      await api.verifyEmail(path)
+      toast.success('You can now login')
+    } catch (e) {
+      toast.error('Could not verify email')
+    }
+    router.push({ name: 'Login' })
   },
   logout() {
     state.token = ''

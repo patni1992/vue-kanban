@@ -1,4 +1,5 @@
 <template>
+  <app-header />
   <router-view />
 </template>
 
@@ -26,6 +27,8 @@ body {
   font-size: 1rem;
   line-height: 1.3;
   height: 100%;
+
+  background-color: #18191a;
 }
 
 html {
@@ -36,3 +39,16 @@ a {
   color: #408cfe;
 }
 </style>
+<script lang="ts">
+import AppHeader from '@/components/AppHeader.vue'
+import useAuth from '@/store/useAuth'
+export default {
+  components: {
+    AppHeader,
+  },
+  setup() {
+    const { me } = useAuth()
+    me()
+  },
+}
+</script>

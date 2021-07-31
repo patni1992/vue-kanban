@@ -1,6 +1,4 @@
-<template>
-  <div>board page</div>
-</template>
+<template>My board</template>
 
 <script>
 export default {}

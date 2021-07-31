@@ -3,7 +3,7 @@
     <div class="text-center">
       <p>
         you're almost there! We sent an email to <br />
-        <span class="text-bold">patriknilsson1992@gmail.com</span>
+        <span class="text-bold"> {{ $route.params.email }}</span>
       </p>
       <p>Just click on the link in that email to complete your signup.</p>
       <p>Still can't find the email?</p>

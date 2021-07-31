@@ -42,7 +42,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { email, required } from '@vuelidate/validators'
+import { email, required, minLength } from '@vuelidate/validators'
 import AppInput from '@/components/AppInput.vue'
 import AppButton from '@/components/AppButton.vue'
 import FormCard from '@/views/auth/FormCard.vue'
@@ -63,7 +63,7 @@ export default defineComponent({
       lastName: '',
     })
     const rules = {
-      password: { required },
+      password: { required, minLength: minLength(6) },
       email: { required, email },
       firstName: { required },
       lastName: { required },
