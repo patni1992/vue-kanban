@@ -9,3 +9,9 @@ interface Register {
   firstName: string
   lastName: string
 }
+
+declare module '@vue/test-utils' {
+  interface VueWrapper {
+    findByTestId(el: string): DOMWrapper<HTMLElementTagNameMap[K]>
+  }
+}
