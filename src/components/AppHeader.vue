@@ -37,7 +37,7 @@ export default {
 
 <style scoped lang="scss">
 nav {
-  background: #303132;
+  background: $bg-color;
   padding: 0 15px;
 }
 a {

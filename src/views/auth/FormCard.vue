@@ -28,7 +28,7 @@ export default {
   padding-top: 6rem;
 }
 .form {
-  background: #303132;
+  background: $bg-color;
   color: white;
   box-shadow: 0 5px 20px 0 rgb(21 27 38 / 8%);
   width: 100%;

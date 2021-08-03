@@ -41,11 +41,13 @@ export default defineComponent({
 .input {
   font-size: 1rem;
   line-height: 22px;
-  border: 1px solid #ced4da;
   border-radius: 6px;
   padding: 10px;
   display: block;
   width: 100%;
+  background-color: $bg-color-light;
+  border: none;
+  color: white;
 
   &:focus {
     border: 1px solid #4895fe;

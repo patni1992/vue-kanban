@@ -76,7 +76,7 @@ h2 {
   grid-auto-rows: 1fr;
 }
 .board {
-  background: #3c3c3c;
+  background: $bg-color-light;
   color: white;
   padding: 0.8rem;
   min-height: 8rem;
