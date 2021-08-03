@@ -1,38 +1,25 @@
 <template>
   <div class="container">
-    <div style="max-width: 52rem">
+    <div>
       <h2>Your boards</h2>
-
       <div class="boards-container">
-        <router-link
+        <board-card
           :key="board.name"
           v-for="board in ownerBoards"
-          :style="{ color: 'white', textDecoration: 'none' }"
-          :to="{ name: 'Board', params: { id: board.id } }"
-        >
-          <div class="board">
-            <p class="board__title">{{ board.name }}</p>
-          </div>
-        </router-link>
-
-        <div class="board center">
-          <p>Create new board</p>
-        </div>
+          :id="board.id"
+          :name="board.name"
+        />
+        <create-board />
       </div>
-
-      <hr style="margin: 3rem 0" />
+      <hr class="hr" />
       <h2>Boards shared with you</h2>
       <div class="boards-container">
-        <router-link
+        <board-card
           :key="board.name"
           v-for="board in memberBoards"
-          :style="{ color: 'white', textDecoration: 'none' }"
-          :to="{ name: 'Board', params: { id: board.id } }"
-        >
-          <div class="board">
-            <p class="board__title">{{ board.name }}</p>
-          </div>
-        </router-link>
+          :id="board.id"
+          :name="board.name"
+        />
       </div>
     </div>
   </div>
@@ -41,7 +28,13 @@
 <script lang="ts">
 import { defineComponent, toRefs } from 'vue'
 import useBoards from '@/store/useBoards'
+import BoardCard from './components/BoardCard.vue'
+import CreateBoard from './components/CreateBoard.vue'
 export default defineComponent({
+  components: {
+    BoardCard,
+    CreateBoard,
+  },
   setup() {
     const { getBoards, state, ownerBoards, memberBoards } = useBoards()
     const { boards } = toRefs(state)
@@ -75,25 +68,8 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   grid-auto-rows: 1fr;
 }
-.board {
-  background: $bg-color-light;
-  color: white;
-  padding: 0.8rem;
-  min-height: 8rem;
-  box-shadow: 0 3px 6px rgb(0 0 0 / 10%), 0 6px 12px rgb(0 0 0 / 10%);
-  border-radius: 5px;
-  display: flex;
-  cursor: pointer;
 
-  &__title {
-    font-weight: 600;
-    margin-top: 0;
-  }
-}
-
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hr {
+  margin: 3rem 0;
 }
 </style>
