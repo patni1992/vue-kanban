@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-item" @click="isOpen = !isOpen">
+  <div data-testid="app-dropdown" class="menu-item" @click="isOpen = !isOpen">
     <a class="title" href="#">
       {{ title }}
     </a>
@@ -10,15 +10,21 @@
       ></path>
     </svg>
     <transition name="fade" appear>
-      <div class="sub-menu" v-if="isOpen">
+      <div ref="clickOutsideTarget" class="sub-menu" v-if="isOpen">
         <p class="sub-menu__title">User actions</p>
         <hr class="hr" />
         <div class="menu-items">
           <div v-for="(item, i) in items" :key="i" class="menu-item">
-            <a v-if="item.click" href="#" @click="item.click">{{
+            <a
+              data-testid="dropdown-click"
+              v-if="item.click"
+              href="#"
+              @click="item.click"
+              >{{ item.title }}</a
+            >
+            <a data-testid="dropdown-link" v-else :href="item.link">{{
               item.title
             }}</a>
-            <a v-else :href="item.link">{{ item.title }}</a>
           </div>
         </div>
       </div>
@@ -27,13 +33,18 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 export default {
   name: 'dropdown',
   props: ['title', 'items'],
-  data() {
-    return {
-      isOpen: false,
-    }
+  setup() {
+    const isOpen = ref(false)
+    const clickOutsideTarget = ref(null)
+
+    onClickOutside(clickOutsideTarget, (event) => (isOpen.value = false))
+
+    return { isOpen, clickOutsideTarget }
   },
 }
 </script>
@@ -50,7 +61,8 @@ export default {
 
 .sub-menu {
   position: absolute;
-  background-color: #ffffff;
+  background-color: $bg-color-light;
+
   top: 3.5rem;
   right: -0.9rem;
   min-width: 15rem;
@@ -73,13 +85,13 @@ export default {
   text-align: left;
 
   a {
-    color: black;
+    color: white;
     text-decoration: none;
   }
 }
 
 .sub-menu__title {
-  color: black;
+  color: white;
 }
 .menu-items {
   padding-top: 0.5rem;
