@@ -16,6 +16,9 @@ const api = {
   getBoards(): Promise<any> {
     return apiClient.get('/boards')
   },
+  createBoard(name: string): Promise<any> {
+    return apiClient.post('/boards', { name })
+  },
 }
 
 export default api

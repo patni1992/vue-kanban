@@ -1,14 +1,4 @@
-interface Login {
-  email: string
-  password: string
-}
-
-interface Register {
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-}
+import '@vue/test-utils'
 
 declare module '@vue/test-utils' {
   interface VueWrapper {

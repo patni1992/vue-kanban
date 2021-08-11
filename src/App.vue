@@ -47,8 +47,9 @@ export default {
     AppHeader,
   },
   setup() {
-    const { me } = useAuth()
-    me()
+    const { me, isAuthenticated } = useAuth()
+
+    if (isAuthenticated.value) me()
   },
 }
 </script>

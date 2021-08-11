@@ -4,13 +4,11 @@ import api from '@/api/api'
 import router from '@/router'
 import useAuth from './useAuth'
 
-console.log(useAuth)
+const defaultState: { boards: any[] } = { boards: [] }
+const state = reactive(defaultState)
 
 export default () => {
   const { user } = useAuth()
-
-  const defaultState = { boards: [] }
-  const state = reactive(defaultState)
 
   const getters = {
     ownerBoards: computed(() =>
@@ -29,7 +27,18 @@ export default () => {
     async getBoards() {
       const response = await api.getBoards()
       state.boards = response.data
-      console.log(state.boards)
+    },
+
+    async createBoard(name: any) {
+      state.boards.unshift({
+        name: name,
+        id: Date.now(),
+        ownerId: user?.value?.['id'],
+      })
+
+      const response = await api.createBoard(name)
+      // state.boards = response.data
+      // console.log(state.boards)
     },
   }
 

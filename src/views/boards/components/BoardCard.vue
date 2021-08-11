@@ -8,8 +8,8 @@
       <p class="board__title">{{ name }}</p>
     </div>
   </router-link>
-  <div v-else class="board center">
-    <p>{{ name }}</p>
+  <div v-else class="board" :class="{ center: center }">
+    <slot />
   </div>
 </template>
 
@@ -19,11 +19,15 @@ export default defineComponent({
   props: {
     name: {
       type: String,
-      required: true,
+      default: '',
     },
     id: {
       type: Number,
       default: null,
+    },
+    center: {
+      type: Boolean,
+      default: false,
     },
   },
 })
@@ -35,6 +39,7 @@ export default defineComponent({
   color: white;
   padding: 0.8rem;
   min-height: 8rem;
+  height: 100%;
   box-shadow: 0 3px 6px rgb(0 0 0 / 10%), 0 6px 12px rgb(0 0 0 / 10%);
   border-radius: 5px;
   display: flex;

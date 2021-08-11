@@ -2,7 +2,7 @@
   <div class="container">
     <div>
       <h2>Your boards</h2>
-      <div class="boards-container">
+      <div class="boards-container" data-testid="owner-boards">
         <board-card
           :key="board.name"
           v-for="board in ownerBoards"
@@ -13,7 +13,7 @@
       </div>
       <hr class="hr" />
       <h2>Boards shared with you</h2>
-      <div class="boards-container">
+      <div class="boards-container" data-testid="member-boards">
         <board-card
           :key="board.name"
           v-for="board in memberBoards"
@@ -56,17 +56,18 @@ h2 {
 }
 .container {
   padding: 2rem 2rem;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
-  // background-color: #22262a;
   height: 100%;
-  // padding: 0 2rem;
+  max-width: 52rem;
 }
 .boards-container {
   display: grid;
   gap: 1.2rem;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   grid-auto-rows: 1fr;
+  //  max-width: 52rem;
 }
 
 .hr {
