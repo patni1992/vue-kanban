@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul class="menu">
-      <li class="logo"><a href="#">Kanban Board</a></li>
+      <li class="logo"><a href="/">Kanban Board</a></li>
       <li v-if="isAuthenticated" class="item">
         <app-dropdown title="Patrik Nilsson" :items="services" />
       </li>

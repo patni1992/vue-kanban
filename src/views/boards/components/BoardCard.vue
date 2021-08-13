@@ -35,7 +35,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .board {
-  background: $bg-color-light;
+  background: $bg-color;
   color: white;
   padding: 0.8rem;
   min-height: 8rem;
@@ -48,6 +48,7 @@ export default defineComponent({
   &__title {
     font-weight: 600;
     margin-top: 0;
+    word-break: break-all;
   }
 }
 

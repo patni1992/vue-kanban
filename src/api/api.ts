@@ -16,6 +16,9 @@ const api = {
   getBoards(): Promise<any> {
     return apiClient.get('/boards')
   },
+  getBoard(id: string): Promise<any> {
+    return apiClient.get(`/boards/${id}`)
+  },
   createBoard(name: string): Promise<any> {
     return apiClient.post('/boards', { name })
   },
