@@ -22,6 +22,16 @@ const api = {
   createBoard(name: string): Promise<any> {
     return apiClient.post('/boards', { name })
   },
+  reorderCards(listId: number, cards: any): Promise<any> {
+    return apiClient.post(`/cards/reorder/?listId=${listId}`, {
+      cardIds: cards.map((card: any) => card.id),
+    })
+  },
+  reorderlists(boardId: number, lists: any): Promise<any> {
+    return apiClient.post(`/lists/reorder/?boardId=${boardId}`, {
+      listIds: lists.map((list: any) => list.id),
+    })
+  },
 }
 
 export default api

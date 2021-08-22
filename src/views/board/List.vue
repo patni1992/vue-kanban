@@ -1,17 +1,21 @@
 <template>
-  <div class="ui">
-    <nav class="navbar board">Board bar</nav>
+  <div class="list">
+    <header>{{ list.name }}</header>
     <draggable
-      @change="onDrag"
-      class="lists"
-      group="list"
-      :list="lists"
+      @change="onChange"
+      group="card"
+      :list="cardsByListId(list.id)"
       item-key="id"
+      class="list-group"
     >
       <template #item="{ element }">
-        <list :list="element" />
+        <li>
+          {{ element.name }}
+        </li>
       </template>
     </draggable>
+
+    <footer>Add a card...</footer>
   </div>
 </template>
 
@@ -22,24 +26,29 @@ import useBoards from '@/store/useBoards'
 import useLists from '@/store/useLists'
 import useCards from '@/store/useCards'
 import draggable from 'vuedraggable'
-import List from './List.vue'
 
 export default defineComponent({
-  components: { List, draggable },
-  setup(p) {
+  components: { draggable },
+  props: { list: Object },
+  setup(props) {
     const route = useRoute()
     const { getBoard } = useBoards()
-    const { lists, moveList } = useLists()
-    const { cardsByListId, moveCard } = useCards()
+    const { lists } = useLists()
+    const { cardsByListId, reOrderCard, moveCard } = useCards()
 
     getBoard(route.params.id as string)
 
-    const onDrag = (e: any) => {
-      moveList(e.moved.oldIndex, e.moved.newIndex)
+    const onChange = (evt: any) => {
+      if (evt.moved) {
+        reOrderCard(props?.list?.id, evt.moved.oldIndex, evt.moved.newIndex)
+      } else if (evt.added) {
+        moveCard(props?.list?.id, evt.added.element.id, evt.added.newIndex)
+        console.log(evt)
+      }
     }
 
     return {
-      onDrag,
+      onChange,
       lists,
       cardsByListId,
     }
