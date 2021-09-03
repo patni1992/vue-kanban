@@ -1,0 +1,7 @@
+# Netlify settings for single-page application
+
+https://www.kanban.patriknilsson.dev/login/* https://kanban.patriknilsson.dev/:splat 301!
+
+https://jolly-raman-542f57.netlify.app/* https://kanban.patriknilsson.dev/:splat 301!
+
+/*    /index.html   200
