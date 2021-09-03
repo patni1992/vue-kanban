@@ -49,6 +49,8 @@ export default {
   setup() {
     const { me, isAuthenticated } = useAuth()
 
+    console.log('test deploy')
+
     if (isAuthenticated.value) me()
   },
 }
