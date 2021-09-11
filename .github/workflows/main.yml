@@ -21,7 +21,11 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm ci
       - run: npm run build
+        env:
+          VUE_APP_API_URL: ${{ secrets.API_URL }}
       - run: npm run test:unit
+        env:
+          VUE_APP_API_URL: http://localhost:3333
       - uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: './dist'
@@ -34,6 +38,5 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          VUE_APP_API_URL: ${{ secrets.API_URL }}
         timeout-minutes: 2
              
