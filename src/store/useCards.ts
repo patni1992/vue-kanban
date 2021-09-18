@@ -53,8 +53,6 @@ export default () => {
     },
 
     async setCards(cards: any) {
-      console.log('cards')
-      console.log(cards)
       state.cards = cards
     },
   }

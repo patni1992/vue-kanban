@@ -2,9 +2,11 @@ import { config, flushPromises, VueWrapper } from '@vue/test-utils'
 import initMockServer from './mockServer'
 
 const DataTestIdPlugin = (wrapper: VueWrapper<any>) => {
-  function findByTestId(selector: string) {
+  function findByTestId(selector: string, multiple = false) {
     const dataSelector = `[data-testid='${selector}']`
-    const element = wrapper.find(dataSelector)
+    const element = multiple
+      ? wrapper.findAll(dataSelector)
+      : wrapper.find(dataSelector)
 
     return element
   }

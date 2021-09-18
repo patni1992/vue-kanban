@@ -15,4 +15,12 @@ const memberBoards = [
   { id: 4, name: 'test-member-board', ownerId: 1337 },
 ]
 
-export { ownerBoards, memberBoards, user }
+const lists = [
+  { id: 1, name: 'test-list-2', boardId: 2, order: 2, cards: [] },
+  { id: 1, name: 'test-list-1', boardId: 1, order: 1, cards: [] },
+  { id: 1, name: 'test-list-3', boardId: 1, order: 3, cards: [] },
+]
+
+const boardName = 'test-board'
+
+export { ownerBoards, memberBoards, user, lists, boardName }

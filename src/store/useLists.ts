@@ -32,7 +32,22 @@ export default () => {
 
       api.reorderlists(state.lists[0].boardId, state.lists)
     },
-    async setLists(lists: any) {
+    async addList(name: string, boardId: number) {
+      if (!name) return
+      const lists = getters.lists.value
+      const lastList = lists[lists.length - 1]
+      const order = lastList?.order ? lastList.order + 1 : 0
+
+      state.lists.push({
+        name: name,
+        boardId,
+        id: Date.now(),
+        order,
+      })
+
+      await api.addList(name, boardId)
+    },
+    setLists(lists: any) {
       state.lists = lists
     },
   }

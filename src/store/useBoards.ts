@@ -43,6 +43,7 @@ export default () => {
   const { setCards } = useCards()
 
   const getters = {
+    board: computed(() => state.board),
     ownerBoards: computed(() =>
       state.boards.filter(
         (board: any) => board?.ownerId === user?.value?.['id']

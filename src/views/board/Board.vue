@@ -1,37 +1,40 @@
 <template>
-  <div class="ui">
-    <nav class="navbar board">Board bar</nav>
-    <draggable
-      @change="onDrag"
-      class="lists"
-      group="list"
-      :list="lists"
-      item-key="id"
-    >
-      <template #item="{ element }">
-        <list :list="element" />
-      </template>
-    </draggable>
+  <div data-testid="board" class="ui">
+    <nav class="navbar board">{{ board?.name }}</nav>
+    <div data-testid="lists" class="lists">
+      <draggable
+        @change="onDrag"
+        class="draggable"
+        group="list"
+        :list="lists"
+        item-key="id"
+      >
+        <template #item="{ element }">
+          <list :list="element" />
+        </template>
+      </draggable>
+      <create-list />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed } from 'vue'
+import { defineComponent, toRefs, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useBoards from '@/store/useBoards'
 import useLists from '@/store/useLists'
 import useCards from '@/store/useCards'
 import draggable from 'vuedraggable'
 import List from './List.vue'
+import CreateList from './CreateList.vue'
 
 export default defineComponent({
-  components: { List, draggable },
-  setup(p) {
+  components: { List, draggable, CreateList },
+  setup() {
     const route = useRoute()
-    const { getBoard } = useBoards()
+    const { getBoard, board } = useBoards()
     const { lists, moveList } = useLists()
     const { cardsByListId, moveCard } = useCards()
-
     getBoard(route.params.id as string)
 
     const onDrag = (e: any) => {
@@ -42,6 +45,7 @@ export default defineComponent({
       onDrag,
       lists,
       cardsByListId,
+      board,
     }
   },
 })
@@ -85,69 +89,16 @@ $card-border-radius: 3px;
   display: flex;
   overflow-x: auto;
   //width: 100%; // This is needed for FF < 54
-  > * {
-    flex: 0 0 auto; // 'rigid' lists
-    margin-left: $gap;
+  .draggable {
+    display: flex;
+    & > * {
+      flex: 0 0 auto; // 'rigid' lists
+      margin-left: $gap;
+    }
   }
   &::after {
     content: '';
     flex: 0 0 $gap;
-  }
-}
-
-.list {
-  width: $list-width;
-  height: calc(100% - #{$gap} - #{$scrollbar-thickness});
-
-  > * {
-    background-color: $bg-color;
-    color: white;
-
-    padding: 0 $gap;
-  }
-
-  header {
-    line-height: $list-header-height;
-    font-size: 16px;
-    font-weight: bold;
-    border-top-left-radius: $list-border-radius;
-    border-top-right-radius: $list-border-radius;
-  }
-
-  footer {
-    line-height: $list-footer-height;
-    border-bottom-left-radius: $list-border-radius;
-    border-bottom-right-radius: $list-border-radius;
-    color: #888;
-  }
-
-  .list-group {
-    list-style: none;
-    margin: 0;
-
-    max-height: calc(100% - #{$list-header-height} - #{$list-footer-height});
-    overflow-y: auto;
-
-    li {
-      cursor: pointer;
-      background-color: $bg-color-dark;
-      color: white;
-      padding: $gap;
-      &:not(:last-child) {
-        margin-bottom: $gap;
-      }
-
-      border-radius: $card-border-radius;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-
-      img {
-        display: block;
-        width: calc(100% + 2 * #{$gap});
-        margin: -$gap 0 $gap (-$gap);
-        border-top-left-radius: $card-border-radius;
-        border-top-right-radius: $card-border-radius;
-      }
-    }
   }
 }
 </style>

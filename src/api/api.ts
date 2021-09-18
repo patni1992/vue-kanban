@@ -32,6 +32,9 @@ const api = {
       listIds: lists.map((list: any) => list.id),
     })
   },
+  addList(name: string, boardId: number): Promise<any> {
+    return apiClient.post('/lists', { name, boardId })
+  },
 }
 
 export default api

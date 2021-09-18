@@ -1,6 +1,6 @@
 <template>
-  <div class="list">
-    <header>{{ list.name }}</header>
+  <div  class="list">
+    <header data-testid="list">{{ list.name }}</header>
     <draggable
       @change="onChange"
       group="card"
@@ -32,11 +32,8 @@ export default defineComponent({
   props: { list: Object },
   setup(props) {
     const route = useRoute()
-    const { getBoard } = useBoards()
     const { lists } = useLists()
     const { cardsByListId, reOrderCard, moveCard } = useCards()
-
-    getBoard(route.params.id as string)
 
     const onChange = (evt: any) => {
       if (evt.moved) {
@@ -63,8 +60,8 @@ $navbar-height: 50px;
 $list-width: 300px;
 $gap: 10px;
 $scrollbar-thickness: 17px;
-$list-header-height: 36px;
-$list-footer-height: 36px;
+$list-header-height: 40px;
+$list-footer-height: 40px;
 // Misc
 $list-border-radius: 5px;
 $card-border-radius: 3px;
