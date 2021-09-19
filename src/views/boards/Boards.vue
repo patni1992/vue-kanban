@@ -11,15 +11,17 @@
         />
         <create-board />
       </div>
-      <hr class="hr" />
-      <h2>Boards shared with you</h2>
-      <div class="boards-container" data-testid="member-boards">
-        <board-card
-          :key="board.name"
-          v-for="board in memberBoards"
-          :id="board.id"
-          :name="board.name"
-        />
+      <div v-if="memberBoards.length">
+        <hr class="hr" />
+        <h2>Boards shared with you</h2>
+        <div class="boards-container" data-testid="member-boards">
+          <board-card
+            :key="board.name"
+            v-for="board in memberBoards"
+            :id="board.id"
+            :name="board.name"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -57,17 +59,13 @@ h2 {
 .container {
   padding: 2rem 2rem;
   margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  max-width: 52rem;
+  max-width: 60rem;
 }
 .boards-container {
+  margin: 0 auto;
   display: grid;
-  gap: 1.2rem;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-auto-rows: 1fr;
-  //  max-width: 52rem;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-gap: 1rem;
 }
 
 .hr {

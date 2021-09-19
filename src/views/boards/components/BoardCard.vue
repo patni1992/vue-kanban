@@ -5,7 +5,7 @@
     :to="{ name: 'Board', params: { id } }"
   >
     <div class="board">
-      <p class="board__title">{{ name }}</p>
+      <p class="board__title">{{ truncate(name, 85) }}</p>
     </div>
   </router-link>
   <div v-else class="board" :class="{ center: center }">
@@ -16,6 +16,15 @@
 <script lang="ts">
 import { toRefs, defineComponent } from 'vue'
 export default defineComponent({
+  setup() {
+    const truncate = (text: string, limit: number) => {
+      if (text.length <= limit) return text
+      return `${text.slice(0, limit)}...`
+    }
+    return {
+      truncate,
+    }
+  },
   props: {
     name: {
       type: String,
@@ -49,6 +58,7 @@ export default defineComponent({
     font-weight: 600;
     margin-top: 0;
     word-break: break-all;
+    line-height: 1.5;
   }
 }
 
