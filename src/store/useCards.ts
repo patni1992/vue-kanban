@@ -36,6 +36,8 @@ export default () => {
         card.order = index
         card.listId = listId
       })
+
+      api.reorderCards(listId, cards)
     },
 
     moveCard(listId: any, cardId: any, newIndex: any) {
@@ -50,6 +52,18 @@ export default () => {
       })
 
       api.reorderCards(listId, cards)
+    },
+
+    createCard(name: string, listId: number) {
+      const cardsInList = getters.cardsByListId.value(listId)
+      const newCard = {
+        name,
+        listId,
+        id: Date.now(),
+        order: cardsInList.length ? cardsInList[cardsInList.length - 1] + 1 : 0,
+      }
+      state.cards.push(newCard)
+      api.createCard(name, listId)
     },
 
     async setCards(cards: any) {

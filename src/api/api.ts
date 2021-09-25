@@ -27,6 +27,9 @@ const api = {
       cardIds: cards.map((card: any) => card.id),
     })
   },
+  createCard(name: string, listId: number): Promise<any> {
+    return apiClient.post('/cards', { name, listId })
+  },
   reorderlists(boardId: number, lists: any): Promise<any> {
     return apiClient.post(`/lists/reorder/?boardId=${boardId}`, {
       listIds: lists.map((list: any) => list.id),

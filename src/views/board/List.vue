@@ -1,5 +1,5 @@
 <template>
-  <div  class="list">
+  <div class="list">
     <header data-testid="list">{{ list.name }}</header>
     <draggable
       @change="onChange"
@@ -14,18 +14,28 @@
         </li>
       </template>
     </draggable>
-
-    <footer>Add a card...</footer>
+    <footer ref="clickOutsideTarget" @click="setCreatingCard">
+      <form @submit.prevent="submitCard" v-if="isCreatingCard">
+        <input
+          ref="input"
+          v-model="cardName"
+          placeholder="List name"
+          type="text"
+        />
+      </form>
+      <span v-else>Add a card...</span>
+    </footer>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed } from 'vue'
+import { defineComponent, toRefs, computed, ref, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useBoards from '@/store/useBoards'
 import useLists from '@/store/useLists'
 import useCards from '@/store/useCards'
 import draggable from 'vuedraggable'
+import { onClickOutside } from '@vueuse/core'
 
 export default defineComponent({
   components: { draggable },
@@ -33,7 +43,24 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
     const { lists } = useLists()
-    const { cardsByListId, reOrderCard, moveCard } = useCards()
+    const clickOutsideTarget = ref(null)
+    const cardName = ref('')
+    const { cardsByListId, reOrderCard, moveCard, createCard } = useCards()
+    const isCreatingCard = ref(false)
+    const input = ref<any>(null)
+
+    const setCreatingCard = () => {
+      isCreatingCard.value = true
+      nextTick(() => {
+        input?.value?.focus()
+      })
+    }
+
+    const submitCard = () => {
+      createCard(cardName.value, props?.list?.id)
+      isCreatingCard.value = false
+      cardName.value = ''
+    }
 
     const onChange = (evt: any) => {
       if (evt.moved) {
@@ -44,10 +71,21 @@ export default defineComponent({
       }
     }
 
+    onClickOutside(
+      clickOutsideTarget,
+      (event) => (isCreatingCard.value = false)
+    )
+
     return {
+      submitCard,
+      clickOutsideTarget,
+      setCreatingCard,
       onChange,
+      cardName,
       lists,
       cardsByListId,
+      isCreatingCard,
+      input,
     }
   },
 })
