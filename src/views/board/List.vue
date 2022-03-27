@@ -9,9 +9,7 @@
       class="list-group"
     >
       <template #item="{ element }">
-        <li>
-          {{ element.name }}
-        </li>
+        <card :card="element" />
       </template>
     </draggable>
     <footer ref="clickOutsideTarget" @click="setCreatingCard">
@@ -36,9 +34,10 @@ import useLists from '@/store/useLists'
 import useCards from '@/store/useCards'
 import draggable from 'vuedraggable'
 import { onClickOutside } from '@vueuse/core'
+import Card from './Card.vue'
 
 export default defineComponent({
-  components: { draggable },
+  components: { draggable, Card },
   props: { list: Object },
   setup(props) {
     const route = useRoute()
@@ -141,7 +140,7 @@ $card-border-radius: 3px;
 
 .list {
   width: $list-width;
-  height: calc(100% - #{$gap} - #{$scrollbar-thickness});
+  height: 86vh;
 
   > * {
     background-color: $bg-color;

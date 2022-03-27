@@ -54,7 +54,6 @@ export default defineComponent({
 <style scoped lang="scss">
 /* Some Sass variables */
 // Layout
-$navbar-height: 50px;
 $list-width: 300px;
 $gap: 10px;
 $scrollbar-thickness: 17px;
@@ -65,8 +64,7 @@ $list-border-radius: 5px;
 $card-border-radius: 3px;
 
 .ui {
-  height: 100vh;
-
+  overflow-x: auto;
   display: grid;
   grid-template-rows: $navbar-height 1fr;
   //grid-template-columns: 100%;
@@ -87,7 +85,7 @@ $card-border-radius: 3px;
 
 .lists {
   display: flex;
-  overflow-x: auto;
+
   //width: 100%; // This is needed for FF < 54
   .draggable {
     display: flex;

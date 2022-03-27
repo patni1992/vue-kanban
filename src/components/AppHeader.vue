@@ -38,6 +38,7 @@ export default {
 <style scoped lang="scss">
 nav {
   background: $bg-color;
+  height: $navbar-height;
   padding: 0 15px;
 }
 a {
