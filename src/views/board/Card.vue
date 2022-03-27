@@ -1,12 +1,50 @@
 <template>
-  <div class="card">
-    {{ card.name }}
+  <div ref="clickOutsideTarget" class="card">
+    <textarea
+      :style="{ height: textareaHeight, width: '100%' }"
+      :value="cardName"
+      ref="input"
+      v-if="isEditing"
+    />
+    <div ref="cardRef" @click="setCreatingCard" v-else>
+      {{ card.name }}
+    </div>
   </div>
 </template>
 
 <script>
+import { defineComponent, toRefs, computed, ref, nextTick } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 export default {
   props: { card: Object },
+  setup(props) {
+    const isEditing = ref(false)
+    const clickOutsideTarget = ref(null)
+    const input = ref(null)
+    const cardRef = ref(null)
+    const cardName = ref(props.card.name)
+    const textareaHeight = ref(null)
+
+    const setCreatingCard = () => {
+      isEditing.value = true
+      textareaHeight.value = `${cardRef.value.clientHeight}px`
+      nextTick(() => {
+        input?.value?.focus()
+      })
+    }
+
+    onClickOutside(clickOutsideTarget, (event) => (isEditing.value = false))
+
+    return {
+      isEditing,
+      clickOutsideTarget,
+      input,
+      setCreatingCard,
+      cardName,
+      cardRef,
+      textareaHeight,
+    }
+  },
 }
 </script>
 
@@ -14,8 +52,11 @@ export default {
 $card-border-radius: 3px;
 $gap: 10px;
 .card {
-  cursor: pointer;
   word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: pointer;
+
   background-color: $bg-color-dark;
   color: white;
   padding: $gap;

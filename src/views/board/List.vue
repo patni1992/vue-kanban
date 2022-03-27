@@ -14,7 +14,8 @@
     </draggable>
     <footer ref="clickOutsideTarget" @click="setCreatingCard">
       <form @submit.prevent="submitCard" v-if="isCreatingCard">
-        <input
+        <textarea
+          @keyup.enter.exact="submitCard"
           ref="input"
           v-model="cardName"
           placeholder="List name"
