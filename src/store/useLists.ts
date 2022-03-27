@@ -1,11 +1,9 @@
-import { reactive, readonly, computed, watch } from 'vue'
-import { useToast } from 'vue-toastification'
+import { reactive, readonly, computed } from 'vue'
+
 import api from '@/api/api'
-import router from '@/router'
-import useAuth from './useAuth'
 
 interface DefaultState {
-  lists: any[]
+  lists: List[]
 }
 
 const defaultState: DefaultState = {
@@ -16,13 +14,11 @@ const state = reactive(defaultState)
 
 export default () => {
   const getters = {
-    lists: computed(() =>
-      state.lists.sort((a: any, b: any) => a.order - b.order)
-    ),
+    lists: computed(() => state.lists.sort((a, b) => a.order - b.order)),
   }
 
   const actions = {
-    moveList(oldIndex: any, newIndex: any) {
+    moveList(oldIndex: number, newIndex: number) {
       const element = state.lists[oldIndex]
       state.lists.splice(oldIndex, 1)
       state.lists.splice(newIndex, 0, element)
@@ -43,11 +39,14 @@ export default () => {
         boardId,
         id: Date.now(),
         order,
+        createdAt: new Date().toString(),
+        updatedAt: new Date().toString(),
       })
 
-      await api.addList(name, boardId)
+      const response = await api.addList(name, boardId)
+      state.lists[state.lists.length - 1] = response.data
     },
-    setLists(lists: any) {
+    setLists(lists: List[]) {
       state.lists = lists
     },
   }

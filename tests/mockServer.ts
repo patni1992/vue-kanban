@@ -8,7 +8,7 @@ const handlers = [
   }),
 
   rest.post(`${process.env.VUE_APP_API_URL}/boards`, (req, res, ctx) => {
-    return res(ctx.status(200))
+    return res(ctx.status(200), ctx.json([]))
   }),
 
   rest.get(`${process.env.VUE_APP_API_URL}/boards/:id`, (req, res, ctx) => {

@@ -1,14 +1,8 @@
-import { reactive, readonly, computed, watch } from 'vue'
-import { useToast } from 'vue-toastification'
+import { reactive, readonly, computed } from 'vue'
 import api from '@/api/api'
-import router from '@/router'
-import useAuth from './useAuth'
+import { cardFactory } from './factories'
 
-interface DefaultState {
-  cards: any[]
-}
-
-const defaultState: DefaultState = {
+const defaultState: DefaultCardsState = {
   cards: [],
 }
 
@@ -17,7 +11,7 @@ const state = reactive(defaultState)
 export default () => {
   const getters = {
     cardsByListId: computed(
-      () => (listId: any) =>
+      () => (listId: Card['listId']) =>
         state.cards
           .filter((card) => card.listId === listId)
           .sort((a, b) => a.order - b.order)
@@ -25,7 +19,7 @@ export default () => {
   }
 
   const actions = {
-    reOrderCard(listId: any, fromIndex: number, toIndex: number) {
+    reOrderCard(listId: Card['listId'], fromIndex: number, toIndex: number) {
       const cards = getters.cardsByListId.value(listId)
       const card = cards[fromIndex]
 
@@ -40,9 +34,11 @@ export default () => {
       api.reorderCards(listId, cards)
     },
 
-    moveCard(listId: any, cardId: any, newIndex: any) {
+    moveCard(listId: Card['listId'], cardId: Card['id'], newIndex: number) {
       const cards = getters.cardsByListId.value(listId)
       const card = state.cards.find((card) => card.id === cardId)
+
+      if (!card) return
 
       cards.splice(newIndex, 0, card)
 
@@ -54,19 +50,17 @@ export default () => {
       api.reorderCards(listId, cards)
     },
 
-    createCard(name: string, listId: number) {
+    async createCard(name: Card['name'], listId: Card['listId']) {
       const cardsInList = getters.cardsByListId.value(listId)
-      const newCard = {
-        name,
-        listId,
-        id: Date.now(),
-        order: cardsInList.length ? cardsInList[cardsInList.length - 1] + 1 : 0,
-      }
+      const newCard: Card = cardFactory({ name, listId, cardsInList })
+
       state.cards.push(newCard)
-      api.createCard(name, listId)
+
+      const response = await api.createCard(name, listId)
+      state.cards[state.cards.length - 1] = response.data
     },
 
-    async setCards(cards: any) {
+    async setCards(cards: Card[]) {
       state.cards = cards
     },
   }
